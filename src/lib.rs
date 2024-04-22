@@ -12,24 +12,27 @@ pub fn create_map(path :&str) -> Result<Map,Error>{
     let mut count = 0;
     let mut m = 0;
     for line in buffer.lines(){
-        let mut n = 0;
+
         count = count +1;
         let store = match line {
             Err(_e) => panic!("no line"),
             Ok(line2) => line2,
         };
         if count < 3{
-            continue
-        }
-        let catcher = store.split("");
+            continue;
+        };
+        let mut n = 0;
 
-        for i in catcher{
-            if i.eq("X"){
-                map.map[m][n].is_wall = true;
-            }else if i.eq("P"){
-                map.map[m][n].is_portal = true;
-            }else if i.eq("S"){
-                map.map[m][n].cursor = true;
+        for i in store.chars(){
+            let x = &mut map.map[m][n];
+            x.location = (m,n);
+            if i == 'X'{
+                x.is_wall = true;
+            }else if i == 'P'{
+                x.is_portal = true;
+            }else if i == 'S'{
+                x.cursor = true;
+
             }
             n = n + 1;
         }

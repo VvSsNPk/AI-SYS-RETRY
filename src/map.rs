@@ -9,7 +9,7 @@ pub struct Map{
 impl Map{
     pub fn new() -> Self{
         Map{
-            map: vec![vec![Default::default();17];11],
+            map: vec![vec![Default::default();18];12],
         }
     }
 
@@ -17,15 +17,19 @@ impl Map{
         for i in &self.map{
             for j in i {
                 if j.is_wall{
-                    print!("X");
+                    print!("\u{2588}\u{2588}");
                 }else{
                     if j.cursor{
-                        print!("S")
+                        print!("\u{EE1D}");
                     } else{
-                        if j.is_cleaned{
-                            print!("   ")
+                        if j.is_portal{
+                            print!("\u{25A0}\u{25A0}");
                         }else{
-                            print!("#")
+                            if j.is_cleaned{
+                                print!("  ")
+                            }else{
+                                print!("\u{25CC}\u{25CC}");
+                            }
                         }
                     }
                 }
