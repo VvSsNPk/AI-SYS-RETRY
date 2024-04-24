@@ -30,7 +30,7 @@ impl Map {
                             print!("P");
                         } else {
                             if j.is_cleaned {
-                                print!("   ")
+                                print!(" ")
                             } else {
                                 print!("#");
                             }
@@ -44,7 +44,7 @@ impl Map {
     }
 
 
-    pub fn make_move(&self, c: char){
+    pub fn make_move(&mut self, c: &char){
         let count = 1;
         if !&self.moves.is_empty(){
             let (first,second) = self.start;
@@ -54,7 +54,7 @@ impl Map {
                    cur.cursor = false;
                    cur.is_cleaned = true;
                    let mut ch = 0;
-                   if c == 'N'{
+                   if c == &'N'{
                     ch = first -  count;
                    } else{
                     ch = first + count;
@@ -62,7 +62,6 @@ impl Map {
                    self.start = (ch,second);
                    cur = &mut self.map[ch][second];
                    cur.cursor = true;
-                   cur.is_cleaned = true;            
                 }
                 
             }else{
@@ -71,15 +70,14 @@ impl Map {
                     cur.cursor = false;
                     cur.is_cleaned = true;
                     let mut ch = 0;
-                    if c == 'W'{
+                    if c == &'W'{
                         ch = second - count;
                     }else{
                         ch = second + count;
                     }
-                    self.start = (first,ch);
+                     self.start = (first,ch);
                     cur = &mut self.map[first][ch];
                     cur.cursor = true;
-                    cur.is_cleaned = true;
                 }
             }
 
