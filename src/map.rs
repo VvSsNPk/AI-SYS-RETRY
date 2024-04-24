@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use crate::map::square::Square;
 mod square;
 pub struct Map {
@@ -5,6 +6,7 @@ pub struct Map {
     pub start: (usize, usize),
     pub portals: Vec<(usize, usize)>,
     pub moves : String,
+    pub uncleaned : HashSet<(usize,usize)>,
 }
 
 impl Map {
@@ -14,6 +16,7 @@ impl Map {
             start: (0, 0),
             portals: Vec::new(),
             moves: String::new(),
+            uncleaned: HashSet::new(),
         }
     }
 
@@ -63,6 +66,7 @@ impl Map {
                        self.map[ch][second].is_cleaned = true;
                        self.map[ch][second].cursor = true;
                        self.map[first][second].cursor = false;
+                       self.uncleaned.remove(&self.start);
                    }
                 }
                 
@@ -80,12 +84,10 @@ impl Map {
                         self.map[first][ch].cursor = true;
                         self.map[first][second].cursor = false;
                         self.map[first][ch].is_cleaned = true;
+                        self.uncleaned.remove(&self.start);
                     }
                 }
             }
-
-
         }
-
-        }
+    }
 }

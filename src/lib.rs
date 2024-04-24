@@ -35,6 +35,8 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
                 } else if i == 'S' {
                     x.cursor = true;
                     map.start = (m, n);
+                }else {
+                    map.uncleaned.insert((m,n));
                 }
                 n = n + 1;
             }
