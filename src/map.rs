@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 use crate::map::square::Square;
 mod square;
+#[derive(Clone)]
 pub struct Map {
     pub map: Vec<Vec<Square>>,
     pub start: (usize, usize),
