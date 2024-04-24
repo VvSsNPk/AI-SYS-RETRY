@@ -1,17 +1,15 @@
 #[derive(Clone)]
-pub struct Square{
-    pub location: (usize,usize),
+pub struct Square {
+    pub location: (usize, usize),
     pub cursor: bool,
     pub is_cleaned: bool,
     pub is_portal: bool,
     pub is_wall: bool,
 }
 
-impl Default for Square{
-
-
+impl Default for Square {
     fn default() -> Self {
-        Square{
+        Square {
             location: (0, 0),
             cursor: false,
             is_cleaned: false,
