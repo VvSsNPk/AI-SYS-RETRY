@@ -44,6 +44,10 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
     println!("{:?}", moves);
 
     map.moves.push_str(&moves[1]);
+    for i in map.moves.chars(){
+        map.make_move(i);
+    }
 
     Ok(map)
 }
+
