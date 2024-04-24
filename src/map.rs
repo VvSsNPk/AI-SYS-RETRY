@@ -45,22 +45,43 @@ impl Map {
 
 
     pub fn make_move(&self, c: char){
+        let count = 1;
         if !&self.moves.is_empty(){
-            let (first,second) = &self.start;
+            let (first,second) = self.start;
             if c.eq(&'N') || c.eq(&'S'){
-               let mut count = 0;
-               if c == 'N' {
-                   count = 1;
-               }else{
-                   count = -1;
-               }
-               if first != &0usize && first != &11usize{
-                   let move = first + count;
-                   &mut self.start = (move,second);
-                   &self.map[first][second];
-               }
+               if first != 0usize && first != 11usize{
+                   let mut cur = &mut self.map[first][second];
+                   cur.cursor = false;
+                   cur.is_cleaned = true;
+                   let mut ch = 0;
+                   if c == 'N'{
+                    ch = first -  count;
+                   } else{
+                    ch = first + count;
+                   }
+                   self.start = (ch,second);
+                   cur = &mut self.map[ch][second];
+                   cur.cursor = true;
+                   cur.is_cleaned = true;            
+                }
                 
-            } 
+            }else{
+                if second != 0usize && second != 17usize{
+                    let mut cur = &mut self.map[first][second];
+                    cur.cursor = false;
+                    cur.is_cleaned = true;
+                    let mut ch = 0;
+                    if c == 'W'{
+                        ch = second - count;
+                    }else{
+                        ch = second + count;
+                    }
+                    self.start = (first,ch);
+                    cur = &mut self.map[first][ch];
+                    cur.cursor = true;
+                    cur.is_cleaned = true;
+                }
+            }
 
 
         }
