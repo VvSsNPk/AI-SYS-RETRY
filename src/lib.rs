@@ -44,10 +44,11 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
     println!("{:?}", moves);
 
     map.moves.push_str(&moves[1]);
-   /* let str = &map.moves.clone();
-    for i in str.chars(){
-        &map.make_move(&i);
-    }*/
+   let str = &map.moves.clone();
+    for i in str.chars() {
+        &map.make_move(i);
+    }
+
 
     Ok(map)
 }

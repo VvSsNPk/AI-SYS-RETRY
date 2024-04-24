@@ -44,40 +44,43 @@ impl Map {
     }
 
 
-    pub fn make_move(&mut self, c: &char){
+    pub fn make_move(&mut self, c: char){
         let count = 1;
         if !&self.moves.is_empty(){
             let (first,second) = self.start;
             if c.eq(&'N') || c.eq(&'S'){
                if first != 0usize && first != 11usize{
-                   let mut cur = &mut self.map[first][second];
-                   cur.cursor = false;
-                   cur.is_cleaned = true;
+                   self.map[first][second].is_cleaned = true;
                    let mut ch = 0;
-                   if c == &'N'{
+                   if c == 'N'{
                     ch = first -  count;
                    } else{
                     ch = first + count;
                    }
                    self.start = (ch,second);
-                   cur = &mut self.map[ch][second];
-                   cur.cursor = true;
+
+                   if !self.map[ch][second].is_wall {
+                       self.map[ch][second].is_cleaned = true;
+                       self.map[ch][second].cursor = true;
+                       self.map[first][second].cursor = false;
+                   }
                 }
                 
             }else{
                 if second != 0usize && second != 17usize{
-                    let mut cur = &mut self.map[first][second];
-                    cur.cursor = false;
-                    cur.is_cleaned = true;
+                    self.map[first][second].is_cleaned = true;
                     let mut ch = 0;
-                    if c == &'W'{
+                    if c == 'W'{
                         ch = second - count;
                     }else{
                         ch = second + count;
                     }
                      self.start = (first,ch);
-                    cur = &mut self.map[first][ch];
-                    cur.cursor = true;
+                    if !self.map[first][ch].is_wall {
+                        self.map[first][ch].cursor = true;
+                        self.map[first][second].cursor = false;
+                        self.map[first][ch].is_cleaned = true;
+                    }
                 }
             }
 
