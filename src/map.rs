@@ -42,4 +42,28 @@ impl Map {
             println!()
         }
     }
+
+
+    pub fn make_move(&self, c: char){
+        if !&self.moves.is_empty(){
+            let (first,second) = &self.start;
+            if c.eq(&'N') || c.eq(&'S'){
+               let mut count = 0;
+               if c == 'N' {
+                   count = 1;
+               }else{
+                   count = -1;
+               }
+               if first != &0usize && first != &11usize{
+                   let move = first + count;
+                   &mut self.start = (move,second);
+                   &self.map[first][second];
+               }
+                
+            } 
+
+
+        }
+
+        }
 }
