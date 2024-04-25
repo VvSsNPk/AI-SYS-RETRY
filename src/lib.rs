@@ -55,3 +55,26 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
     Ok(map)
 }
 
+pub  fn create_write_to_file(path : &str) -> std::io::Result<()>{
+    let mut sol = path.to_string();
+    let result = create_map(path).unwrap();
+    sol = sol.replace("problem", "solution");
+    let mut f = File::create(sol)?;
+    if !result.uncleaned.is_empty(){
+        f.write_all("BAD PLAN".as_bytes())?;
+        f.write_all(b"\n")?;
+       for x in result.uncleaned{
+           let (i,j) = x;
+           f.write_all(i.to_string().as_bytes())?;
+           f.write_all(b"\t")?;
+           f.write_all(j.to_string().as_bytes())?;
+           f.write_all(b"\n")?;
+       }
+    }else{
+        f.write_all("GOOD PLAN".as_bytes())?;
+    }
+
+    
+    Ok(())
+}
+

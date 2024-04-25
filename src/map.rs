@@ -49,21 +49,22 @@ impl Map {
 
 
     pub fn make_move(&mut self, c: char){
-        let count = 1;
         if !&self.moves.is_empty(){
             let (first,second) = self.start;
             if c.eq(&'N') || c.eq(&'S'){
                if first != 0usize && first != 11usize{
-                   self.map[first][second].is_cleaned = true;
+
                    let mut ch = 0;
                    if c == 'N'{
-                    ch = first -  count;
+                    ch = first -  1usize;
                    } else{
-                    ch = first + count;
+                    ch = first + 1usize;
                    }
-                   self.start = (ch,second);
+
 
                    if !self.map[ch][second].is_wall {
+                       self.start = (ch,second);
+                       self.map[first][second].is_cleaned = true;
                        self.map[ch][second].is_cleaned = true;
                        self.map[ch][second].cursor = true;
                        self.map[first][second].cursor = false;
@@ -73,15 +74,17 @@ impl Map {
                 
             }else{
                 if second != 0usize && second != 17usize{
-                    self.map[first][second].is_cleaned = true;
+
                     let mut ch = 0;
                     if c == 'W'{
-                        ch = second - count;
+                        ch = second - 1usize;
                     }else{
-                        ch = second + count;
+                        ch = second + 1usize;
                     }
-                     self.start = (first,ch);
+
                     if !self.map[first][ch].is_wall {
+                        self.start = (first,ch);
+                        self.map[first][second].is_cleaned = true;
                         self.map[first][ch].cursor = true;
                         self.map[first][second].cursor = false;
                         self.map[first][ch].is_cleaned = true;
