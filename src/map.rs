@@ -63,12 +63,24 @@ impl Map {
 
 
                    if !self.map[ch][second].is_wall {
-                       self.start = (ch,second);
                        self.map[first][second].is_cleaned = true;
-                       self.map[ch][second].is_cleaned = true;
-                       self.map[ch][second].cursor = true;
                        self.map[first][second].cursor = false;
-                       self.uncleaned.remove(&self.start);
+                       if !self.map[ch][second].is_portal {
+                           self.start = (ch, second);
+                           self.map[ch][second].is_cleaned = true;
+                           self.map[ch][second].cursor = true;
+                           self.uncleaned.remove(&self.start);
+                       }else{
+                           let mut m = 0usize;
+                           let mut n=0usize;
+                           for i in &self.portals{
+                               if i != &(ch,second){
+                                   (m,n) = *i;
+                               }
+                           }
+                           self.start = (m,n);
+                           self.map[m][n].cursor = true;
+                       }
                    }
                 }
                 
@@ -83,12 +95,24 @@ impl Map {
                     }
 
                     if !self.map[first][ch].is_wall {
-                        self.start = (first,ch);
                         self.map[first][second].is_cleaned = true;
-                        self.map[first][ch].cursor = true;
                         self.map[first][second].cursor = false;
-                        self.map[first][ch].is_cleaned = true;
-                        self.uncleaned.remove(&self.start);
+                        if !self.map[first][ch].is_portal {
+                            self.start = (first, ch);
+                            self.map[first][ch].cursor = true;
+                            self.map[first][ch].is_cleaned = true;
+                            self.uncleaned.remove(&self.start);
+                        }else{
+                            let mut m = 0usize;
+                            let mut n=0usize;
+                            for i in &self.portals{
+                                if i != &(ch,second){
+                                    (m,n) = *i;
+                                }
+                            }
+                            self.start = (m,n);
+                            self.map[m][n].cursor = true;
+                        }
                     }
                 }
             }
