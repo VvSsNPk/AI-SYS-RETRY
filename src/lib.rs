@@ -46,27 +46,30 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
     println!("{:?}", moves);
 
     map.moves.push_str(&moves[1]);
-   let str = &map.moves.clone();
-    for i in str.chars() {
-        &map.make_move(i);
-    }
-
-
     Ok(map)
+}
+
+pub fn simulate_moves(map: &mut Map){
+
+    let str = map.moves.clone();
+    for i in str.chars() {
+        map.make_move(i);
+    }
 }
 
 pub  fn create_write_to_file(path : &str) -> std::io::Result<()>{
     let mut sol = path.to_string();
-    let result = create_map(path).unwrap();
+    let mut result = create_map(path).unwrap();
     sol = sol.replace("problem", "solution");
     let mut f = File::create(sol)?;
+    simulate_moves(&mut result);
     if !result.uncleaned.is_empty(){
         f.write_all("BAD PLAN".as_bytes())?;
         f.write_all(b"\n")?;
        for x in result.uncleaned{
            let (i,j) = x;
            f.write_all(i.to_string().as_bytes())?;
-           f.write_all(b"\t")?;
+           f.write_all(b",")?;
            f.write_all(j.to_string().as_bytes())?;
            f.write_all(b"\n")?;
        }

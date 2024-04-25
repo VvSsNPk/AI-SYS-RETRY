@@ -53,15 +53,12 @@ impl Map {
             let (first,second) = self.start;
             if c.eq(&'N') || c.eq(&'S'){
                if first != 0usize && first != 11usize{
-
                    let mut ch = 0;
                    if c == 'N'{
                     ch = first -  1usize;
                    } else{
                     ch = first + 1usize;
                    }
-
-
                    if !self.map[ch][second].is_wall {
                        self.map[first][second].is_cleaned = true;
                        self.map[first][second].cursor = false;
