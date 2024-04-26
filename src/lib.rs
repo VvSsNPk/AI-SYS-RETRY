@@ -58,21 +58,45 @@ pub  fn create_write_to_file(path : &str) -> std::io::Result<()>{
     let mut result = create_map(path).unwrap();
     sol = sol.replace("problem", "solution");
     let mut f = File::create(sol)?;
-    simulate_moves(&mut result);
-    if !result.uncleaned.is_empty(){
+    if result.start == (0,0){
+        start_not_given(&mut result, &mut f).expect("Error!");
+    }else {
+        simulate_moves(&mut result);
+        write_to_file(&result, &mut f).expect("Error writing to file");
+    }
+
+    
+    Ok(())
+}
+
+pub fn write_to_file(map: &Map, f: &mut File) -> std::io::Result<()> {
+    if !&map.uncleaned.is_empty(){
         f.write_all("BAD PLAN".as_bytes())?;
         f.write_all(b"\n")?;
-       for x in result.uncleaned{
-           let (i,j) = x;
-           f.write_all(i.to_string().as_bytes())?;
-           f.write_all(b",")?;
-           f.write_all(j.to_string().as_bytes())?;
-           f.write_all(b"\n")?;
-       }
+        for x in &map.uncleaned{
+            let (i,j) = x;
+            f.write_all(i.to_string().as_bytes())?;
+            f.write_all(b",")?;
+            f.write_all(j.to_string().as_bytes())?;
+            f.write_all(b"\n")?;
+        }
     }else{
         f.write_all("GOOD PLAN".as_bytes())?;
     }
+    Ok(())
+}
 
+pub fn start_not_given(map: &mut Map, f: &mut File) -> std::io::Result<()> {
+    let uncleaned  = &map.uncleaned.clone();
+    for i in uncleaned{
+            let (m, n) = i.clone();
+            map.start = (m,n);
+            map.map[m][n].cursor = true;
+            simulate_moves(map);
+            write_to_file(&map,f).expect("Couldn't write to file");
+            map.map[m][n].cursor = false;
+        }
+    
     
     Ok(())
 }
