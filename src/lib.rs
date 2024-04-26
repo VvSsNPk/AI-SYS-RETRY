@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use crate::map::Map;
 use std::fs::File;
 use std::io::prelude::*;
@@ -62,18 +63,18 @@ pub  fn create_write_to_file(path : &str) -> std::io::Result<()>{
         start_not_given(&mut result, &mut f).expect("Error!");
     }else {
         simulate_moves(&mut result);
-        write_to_file(&result, &mut f).expect("Error writing to file");
+        write_to_file(&result.uncleaned, &mut f).expect("Error writing to file");
     }
 
     
     Ok(())
 }
 
-pub fn write_to_file(map: &Map, f: &mut File) -> std::io::Result<()> {
-    if !&map.uncleaned.is_empty(){
+pub fn write_to_file(uncleaned : &HashSet<(usize,usize)>, f: &mut File) -> std::io::Result<()> {
+    if !&uncleaned.is_empty(){
         f.write_all("BAD PLAN".as_bytes())?;
         f.write_all(b"\n")?;
-        for x in &map.uncleaned{
+        for x in uncleaned{
             let (i,j) = x;
             f.write_all(i.to_string().as_bytes())?;
             f.write_all(b",")?;
@@ -88,14 +89,19 @@ pub fn write_to_file(map: &Map, f: &mut File) -> std::io::Result<()> {
 
 pub fn start_not_given(map: &mut Map, f: &mut File) -> std::io::Result<()> {
     let uncleaned  = &map.uncleaned.clone();
+    let mut fin:HashSet<(usize,usize)> = HashSet::new();
     for i in uncleaned{
+            let mut sender = map.clone();
             let (m, n) = i.clone();
-            map.start = (m,n);
-            map.map[m][n].cursor = true;
-            simulate_moves(map);
-            write_to_file(&map,f).expect("Couldn't write to file");
-            map.map[m][n].cursor = false;
+            sender.start = (m,n);
+            sender.map[m][n].cursor = true;
+            sender.map[m][n].is_cleaned = true;
+            simulate_moves(&mut sender);
+            fin.extend(&sender.uncleaned);
         }
+
+    write_to_file(&fin,f).expect("Error!");
+
     
     
     Ok(())
