@@ -9,11 +9,9 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
     let mut map = Map::new();
     let f = File::open(path)?;
     let mut buffer = BufReader::new(f);
-    let mut count = 0;
     let mut m = 0;
     let mut moves = Vec::new();
     for line in buffer.lines() {
-        count += 1;
         let store = match line {
             Err(_e) => panic!("no line"),
             Ok(line2) => line2,
@@ -43,8 +41,6 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
             m = m + 1;
         }
     }
-    println!("{:?}", moves);
-
     map.moves.push_str(&moves[1]);
     Ok(map)
 }
