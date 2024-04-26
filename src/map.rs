@@ -3,7 +3,7 @@ use crate::map::square::Square;
 mod square;
 #[derive(Clone)]
 pub struct Map {
-    pub map: Vec<Vec<Square>>,
+    pub map: [[Square;18];12],
     pub start: (usize, usize),
     pub portals: Vec<(usize, usize)>,
     pub moves : String,
@@ -13,7 +13,7 @@ pub struct Map {
 impl Map {
     pub fn new() -> Self {
         Map {
-            map: vec![vec![Default::default(); 18]; 12],
+            map: [[Default::default(); 18]; 12],
             start: (0, 0),
             portals: Vec::new(),
             moves: String::new(),

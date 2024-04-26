@@ -1,4 +1,4 @@
-#[derive(Clone)]
+#[derive(Copy, Clone)]
 pub struct Square {
     pub location: (usize, usize),
     pub cursor: bool,
