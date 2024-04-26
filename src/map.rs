@@ -1,7 +1,9 @@
 use std::collections::HashSet;
+use std::str::Chars;
+use std::usize;
 use crate::map::square::Square;
 mod square;
-#[derive(Clone)]
+#[derive(Clone,Default)]
 pub struct Map {
     pub map: [[Square;18];12],
     pub start: (usize, usize),
@@ -48,46 +50,44 @@ impl Map {
     }
 
 
-    pub fn make_move(&mut self, c: char){
-        if !&self.moves.is_empty(){
-            let (first,second) = self.start;
-            if c.eq(&'N') || c.eq(&'S'){
-               if first != 0usize && first != 11usize{
-                   let  ch;
-                   if c == 'N'{
-                    ch = first -  1usize;
-                   } else{
-                    ch = first + 1usize;
-                   }
-                   if !self.map[ch][second].is_wall {
-                       self.map[first][second].is_cleaned = true;
-                       self.map[first][second].cursor = false;
-                       if !self.map[ch][second].is_portal {
-                           self.start = (ch, second);
-                           self.map[ch][second].is_cleaned = true;
-                           self.map[ch][second].cursor = true;
-                           self.uncleaned.remove(&self.start);
-                       }else{
-                           let mut m = 0usize;
-                           let mut n=0usize;
-                           for i in &self.portals{
-                               if i != &(ch,second){
-                                   (m,n) = *i;
-                               }
-                           }
-                           self.start = (m,n);
-                           self.map[m][n].cursor = true;
-                       }
-                   }
-                }
-                
-            }else{
-                if second != 0usize && second != 17usize{
-
+    pub fn make_move(&mut self, c: char) {
+        if !&self.moves.is_empty() {
+            let (first, second) = self.start;
+            if c.eq(&'N') || c.eq(&'S') {
+                if first != 0usize && first != 11usize {
                     let ch;
-                    if c == 'W'{
+                    if c == 'N' {
+                        ch = first - 1usize;
+                    } else {
+                        ch = first + 1usize;
+                    }
+                    if !self.map[ch][second].is_wall {
+                        self.map[first][second].is_cleaned = true;
+                        self.map[first][second].cursor = false;
+                        if !self.map[ch][second].is_portal {
+                            self.start = (ch, second);
+                            self.map[ch][second].is_cleaned = true;
+                            self.map[ch][second].cursor = true;
+                            self.uncleaned.remove(&self.start);
+                        } else {
+                            let mut m = 0usize;
+                            let mut n = 0usize;
+                            for i in &self.portals {
+                                if i != &(ch, second) {
+                                    (m, n) = *i;
+                                }
+                            }
+                            self.start = (m, n);
+                            self.map[m][n].cursor = true;
+                        }
+                    }
+                }
+            } else {
+                if second != 0usize && second != 17usize {
+                    let ch;
+                    if c == 'W' {
                         ch = second - 1usize;
-                    }else{
+                    } else {
                         ch = second + 1usize;
                     }
 
@@ -99,15 +99,15 @@ impl Map {
                             self.map[first][ch].cursor = true;
                             self.map[first][ch].is_cleaned = true;
                             self.uncleaned.remove(&self.start);
-                        }else{
+                        } else {
                             let mut m = 0usize;
-                            let mut n=0usize;
-                            for i in &self.portals{
-                                if i != &(ch,second){
-                                    (m,n) = *i;
+                            let mut n = 0usize;
+                            for i in &self.portals {
+                                if i != &(ch, second) {
+                                    (m, n) = *i;
                                 }
                             }
-                            self.start = (m,n);
+                            self.start = (m, n);
                             self.map[m][n].cursor = true;
                         }
                     }
@@ -115,5 +115,5 @@ impl Map {
             }
         }
     }
-
 }
+

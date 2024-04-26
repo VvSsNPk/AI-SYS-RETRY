@@ -42,7 +42,9 @@ pub fn create_map(path: &str) -> Result<Map, Error> {
             m = m + 1;
         }
     }
-    map.moves.push_str(&moves[1]);
+    if moves.len() == 2 {
+        map.moves.push_str(&moves[1]);
+    }
     Ok(map)
 }
 
@@ -57,7 +59,7 @@ pub fn simulate_moves(map: &mut Map){
 pub  fn create_write_to_file(path : &str) -> std::io::Result<()>{
     let mut sol = path.to_string();
     let mut result = create_map(path).unwrap();
-    sol = sol.replace("problem", "solution");
+    sol = sol.replace("problem", "solution/solution");
     let mut f = File::create(sol)?;
     if result.start == (0,0){
         start_not_given(&mut result, &mut f).expect("Error!");
@@ -106,4 +108,3 @@ pub fn start_not_given(map: &mut Map, f: &mut File) -> std::io::Result<()> {
     
     Ok(())
 }
-
