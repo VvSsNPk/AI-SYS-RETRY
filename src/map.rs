@@ -5,7 +5,7 @@ mod square;
 pub struct Map {
     pub map: [[Square;18];12],
     pub start: (usize, usize),
-    pub portals: Vec<(usize, usize)>,
+    pub portals: Vec<(usize,usize)>,
     pub moves : String,
     pub uncleaned : HashSet<(usize,usize)>,
 }
@@ -53,7 +53,7 @@ impl Map {
             let (first,second) = self.start;
             if c.eq(&'N') || c.eq(&'S'){
                if first != 0usize && first != 11usize{
-                   let mut ch = 0;
+                   let  ch;
                    if c == 'N'{
                     ch = first -  1usize;
                    } else{
@@ -84,7 +84,7 @@ impl Map {
             }else{
                 if second != 0usize && second != 17usize{
 
-                    let mut ch = 0;
+                    let ch;
                     if c == 'W'{
                         ch = second - 1usize;
                     }else{

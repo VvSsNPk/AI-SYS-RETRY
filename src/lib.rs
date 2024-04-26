@@ -9,7 +9,7 @@ mod map;
 pub fn create_map(path: &str) -> Result<Map, Error> {
     let mut map = Map::new();
     let f = File::open(path)?;
-    let mut buffer = BufReader::new(f);
+    let buffer = BufReader::new(f);
     let mut m = 0;
     let mut moves = Vec::new();
     for line in buffer.lines() {
